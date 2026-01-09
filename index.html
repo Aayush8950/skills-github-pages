@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anchal Tyagi's Healing Journey</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        :root {
+            --bg-cream: #fdfaf5;
+            --soft-green: #8fb378;
+            --deep-green: #4a6b35;
+            --warm-grey: #555555;
+            --highlight-gold: #f0e6cc;
+            --alert-red: #d9534f;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-cream);
+            color: var(--warm-grey);
+            line-height: 1.7;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        /* --- Action Bar & Header --- */
+        .action-bar {
+            text-align: right;
+            padding: 20px;
+            background: var(--bg-cream);
+        }
+
+        .download-btn {
+            background-color: var(--deep-green);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .download-btn:hover { transform: scale(1.05); }
+
+        header {
+            background: linear-gradient(135deg, var(--soft-green), var(--deep-green));
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        header h1 { margin: 0; font-size: 2.5em; }
+        header p { font-size: 1.2em; opacity: 0.9; }
+
+        /* --- The Avatar --- */
+        .avatar-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .avatar-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 4px solid var(--soft-green);
+            background: #fff;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Simple SVG Avatar */
+        .avatar-svg { width: 60px; height: 60px; }
+
+        /* --- Section Styling --- */
+        .section {
+            padding: 40px;
+            border-bottom: 3px dashed var(--highlight-gold);
+        }
+
+        .section h2 {
+            color: var(--deep-green);
+            font-size: 1.8em;
+            margin-top: 0;
+        }
+
+        /* --- Motivating Fact Box --- */
+        .motivating-fact {
+            background-color: #e8f5e9;
+            border-left: 6px solid var(--soft-green);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-style: italic;
+        }
+        .motivating-fact strong { color: var(--deep-green); }
+
+        /* --- Visual Diagram Styles --- */
+        .diagram-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color: var(--bg-cream);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .diagram-step {
+            text-align: center;
+            max-width: 250px;
+            margin: 10px;
+        }
+
+        .diagram-icon {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 15px;
+        }
+
+        /* --- Medication Visuals --- */
+        .med-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .med-card {
+            background: white;
+            border: 2px solid var(--soft-green);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .med-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+
+        .med-photo-placeholder {
+            height: 150px;
+            background: linear-gradient(to bottom right, #ffffff, #f0f0f0);
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            color: #999;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+        /* Adding a fake "label" look */
+        .med-photo-placeholder::after {
+            content: '';
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            height: 30px;
+            background: rgba(143, 179, 120, 0.3);
+            border-radius: 5px;
+        }
+
+        /* --- Schedule Visual --- */
+        .schedule-box {
+            display: flex;
+            margin: 30px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid var(--soft-green);
+        }
+        .schedule-on { flex: 3; background: var(--soft-green); color: white; padding: 20px; text-align: center; }
+        .schedule-off { flex: 1; background: var(--highlight-gold); color: var(--warm-grey); padding: 20px; text-align: center; }
+
+        /* --- Safety Alert --- */
+        .safety-alert {
+            background-color: #fff5f5;
+            border: 3px solid var(--alert-red);
+            color: var(--alert-red);
+            padding: 20px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        .safety-icon { font-size: 3em; margin-right: 20px; }
+
+        /* PDF hide */
+        @media print { .action-bar { display: none; } }
+    </style>
+</head>
+<body>
+
+<div class="container" id="content-to-print">
+    <div class="action-bar">
+        <button class="download-btn" onclick="generatePDF()">⬇ Download as PDF for Anchal</button>
+    </div>
+
+    <header>
+        <svg class="avatar-svg" style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); opacity: 0.2; width: 150px; height: 150px;" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="40" fill="#ffffff"/>
+            <circle cx="35" cy="45" r="5" fill="#4a6b35"/>
+            <circle cx="65" cy="45" r="5" fill="#4a6b35"/>
+            <path d="M 30 65 Q 50 80 70 65" stroke="#4a6b35" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M 10 50 Q 50 10 90 50" stroke="#8fb378" stroke-width="5" fill="none" opacity="0.5"/>
+        </svg>
+        <h1>A Path to Wellness for Anchal Tyagi</h1>
+        <p>Understanding your strength and your personalized care plan.</p>
+    </header>
+
+    <section class="section">
+        <div class="avatar-container">
+             <div class="avatar-img">
+                <svg class="avatar-svg" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="40" fill="#e8f5e9"/>
+                    <circle cx="35" cy="45" r="5" fill="#4a6b35"/>
+                    <circle cx="65" cy="45" r="5" fill="#4a6b35"/>
+                    <path d="M 30 65 Q 50 75 70 65" stroke="#4a6b35" stroke-width="3" fill="none" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <h2>Hello, Anchal! Let's understand your journey.</h2>
+        </div>
+        <p>You have already shown incredible resilience since 2020. This plan is the next step in your healing journey. Your medical team has chosen a highly targeted approach specifically for you.</p>
+        
+        <div class="motivating-fact">
+            <strong>Did You Know?</strong> Due to targeted therapies like the ones you are taking, breast cancer survival rates have doubled in the last 20 years. Science is on your side, Anchal!
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="avatar-container">
+             <div class="avatar-img">
+                <svg class="avatar-svg" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="40" fill="#e8f5e9"/>
+                    <circle cx="35" cy="45" r="5" fill="#4a6b35"/>
+                    <circle cx="65" cy="45" r="5" fill="#4a6b35"/>
+                    <path d="M 35 70 Q 50 60 65 70" stroke="#4a6b35" stroke-width="3" fill="none" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <h2>Anchal's Body: The Engine & The Fuel</h2>
+        </div>
+        <p>Think of the cancer cells in your body as a car engine that is running too fast. In your specific type of condition (HR+), this engine is fueled by a hormone called <strong>Estrogen</strong>.</p>
+        <p>Your treatment plan has a "Double Hit" strategy designed to stop this process.</p>
+
+        <div class="diagram-container">
+            <div class="diagram-step">
+                <svg class="diagram-icon" viewBox="0 0 100 100">
+                    <path d="M20,80 Q50,10 80,80 Z" fill="#d9534f" opacity="0.2"/>
+                    <text x="50" y="95" text-anchor="middle" fill="#d9534f" font-weight="bold">The Problem</text>
+                    <circle cx="50" cy="50" r="15" fill="#d9534f" />
+                    <text x="50" y="55" text-anchor="middle" fill="white" font-size="10">Cell</text>
+                    <path d="M35,35 L25,25" stroke="#d9534f" stroke-width="3"/>
+                    <path d="M65,35 L75,25" stroke="#d9534f" stroke-width="3"/>
+                    <text x="20" y="20" fill="#d9534f" font-size="12">Fuel (Estrogen)</text>
+                </svg>
+                <p>Estrogen fuel makes the engine run too fast.</p>
+            </div>
+            <div style="font-size: 3em; color: var(--soft-green);">➡</div>
+            <div class="diagram-step">
+                 <svg class="diagram-icon" viewBox="0 0 100 100">
+                    <path d="M20,80 Q50,10 80,80 Z" fill="#4a6b35" opacity="0.2"/>
+                    <text x="50" y="95" text-anchor="middle" fill="#4a6b35" font-weight="bold">The Solution</text>
+                    
+                    <rect x="35" y="35" width="30" height="30" fill="#8fb378"/>
+                    <text x="50" y="55" text-anchor="middle" fill="white" font-size="8">ENGINE BLOCKED</text>
+
+                    <path d="M25,25 L35,35" stroke="#555" stroke-width="3" stroke-dasharray="4"/>
+                    <text x="15" y="20" fill="#555" font-size="12">Fuel Cut Off</text>
+                </svg>
+                <p>Your meds block the engine AND cut off the fuel supply.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="avatar-container">
+             <div class="avatar-img">
+                <svg class="avatar-svg" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="40" fill="#e8f5e9"/>
+                    <circle cx="35" cy="45" r="5" fill="#4a6b35"/>
+                    <circle cx="65" cy="45" r="5" fill="#4a6b35"/>
+                    <path d="M 30 65 Q 50 75 70 65" stroke="#4a6b35" stroke-width="3" fill="none" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <h2>Meet Anchal's Healing Team</h2>
+        </div>
+        <p>Here are the three powerful medicines working together for you, Anchal.</p>
+
+        <div class="med-grid">
+            <div class="med-card">
+                <div class="med-photo-placeholder" style="background-color: #e3f2fd;">
+                    
+                </div>
+                <h3 style="color: #1976d2;">1. Webace (Palbociclib)</h3>
+                <p><strong>Role: The "Engine Stopper"</strong></p>
+                <p>It gets inside the cells and jams the gears so they cannot divide.</p>
+            </div>
+
+            <div class="med-card">
+                <div class="med-photo-placeholder" style="background-color: #fbe9e7;">
+                    
+                </div>
+                <h3 style="color: #d84315;">2. Anastrozole</h3>
+                <p><strong>Role: The "Fuel Cleaner"</strong></p>
+                <p>It cleans up any remaining estrogen fuel circulating in your body.</p>
+            </div>
+
+            <div class="med-card">
+                <div class="med-photo-placeholder" style="background-color: #e8f5e9;">
+                    
+                </div>
+                <h3 style="color: #388e3c;">3. Tripty 11.25mg</h3>
+                <p><strong>Role: The "Main Fuel Switch"</strong></p>
+                <p>An injection every 3 months that tells your ovaries to stop making fuel.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>Anchal's Routine: The 21/7 Cycle</h2>
+        <p>It is crucial to follow this rhythm for the Webace medication. Anastrozole is taken every single day.</p>
+        
+        <div class="schedule-box">
+            <div class="schedule-on">
+                <h3>✅ DAYS 1 to 21</h3>
+                <p style="font-size: 1.2em; font-weight: bold;">TAKE MEDICINE</p>
+                <p>Webace + Anastrozole</p>
+            </div>
+            <div class="schedule-off">
+                <h3>⏸️ DAYS 22 to 28</h3>
+                <p style="font-size: 1.2em; font-weight: bold;">REST PERIOD</p>
+                <p>Only Anastrozole. <br>(No Webace)</p>
+            </div>
+        </div>
+        <p><em>Tip for Anchal: Set a daily alarm on your phone for the same time every day!</em></p>
+    </section>
+
+    <section class="section" style="border-bottom: none;">
+         <div class="avatar-container">
+             <div class="avatar-img">
+                <svg class="avatar-svg" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="40" fill="#fff5f5"/>
+                    <circle cx="35" cy="45" r="5" fill="#d9534f"/>
+                    <circle cx="65" cy="45" r="5" fill="#d9534f"/>
+                    <path d="M 45 75 L 55 75" stroke="#d9534f" stroke-width="3" fill="none" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <h2>Crucial Safety & Nourishment for Anchal</h2>
+        </div>
+
+        <div class="safety-alert">
+            <div class="safety-icon">🚫</div>
+            <div>
+                <h3 style="margin:0;">THE BIGGEST "NO": Grapefruit & Seville Oranges</h3>
+                <p style="margin: 5px 0 0 0;">Anchal, you must avoid these fruits completely. They can dangerously increase the level of medicine in your blood.</p>
+            </div>
+        </div>
+
+        <div style="display: flex; margin-top: 30px; gap: 20px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 250px;">
+                <h3 style="color: var(--deep-green);">Anchal's Healing Foods</h3>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li style="margin-bottom: 10px;">🥬 <strong>Leafy Greens:</strong> Spinach & Broccoli for strength.</li>
+                    <li style="margin-bottom: 10px;">🥚 <strong>Good Proteins:</strong> Eggs, Lentils (Dal), Paneer for repair.</li>
+                    <li style="margin-bottom: 10px;">🥛 <strong>Bone Health:</strong> Yogurt & Milk (Calcium is very important now).</li>
+                    <li style="margin-bottom: 10px;">💧 <strong>Hydration:</strong> 8-10 glasses of water daily.</li>
+                </ul>
+            </div>
+            <div style="flex: 1; min-width: 250px;">
+                 <h3 style="color: var(--warm-grey);">When to Call the Doctor</h3>
+                 <ul style="list-style-type: none; padding: 0;">
+                    <li style="margin-bottom: 15px; border-left: 4px solid var(--alert-red); padding-left: 10px;">
+                        <strong>🌡️ FEVER:</strong> If your temperature goes over 100.4°F (38°C), call immediately. This is vital.
+                    </li>
+                    <li style="margin-bottom: 15px; border-left: 4px solid var(--soft-green); padding-left: 10px;">
+                        <strong>🦴 Deep Bone Pain:</strong> Some aches are normal, but deep, constant pain needs checking.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer style="text-align: center; padding: 30px; background: var(--deep-green); color: white;">
+        <h2 style="color: white; margin-bottom: 10px;">Keep Going, Anchal Tyagi.</h2>
+        <p>Your courage inspires everyone around you. We are with you every step of the way.</p>
+    </footer>
+
+</div>
+
+<script>
+    function generatePDF() {
+        const element = document.getElementById('content-to-print');
+        const btn = document.querySelector('.action-bar');
+        btn.style.display = 'none'; // Hide button for print
+
+        const opt = {
+            margin:       [0.3, 0.3, 0.3, 0.3], // Smaller margins for better fit
+            filename:     'Anchal_Tyagi_Healing_Plan.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true, scrollY: 0 },
+            jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' },
+            pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] } // Better page breaking
+        };
+
+        html2pdf().set(opt).from(element).save().then(() => {
+            btn.style.display = 'block'; // Show button again
+        });
+    }
+</script>
+
+</body>
+</html>
